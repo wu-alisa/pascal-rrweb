@@ -8072,11 +8072,32 @@ window.Pascal = {
   },
 
   startRecording: function () {
-    rrwebRecord({
-      emit: (event) => {
-        this.sendEvents(event);
+    let events = [];
+
+    rrweb.record({
+      emit(event) {
+        // push event into the events array
+        events.push(event);
       },
     });
+
+    // this function will send events to the backend and reset the events array
+    function save() {
+      console.log("here");
+      const body = JSON.stringify({ events });
+      console.log(events);
+      events = [];
+      //   fetch("http://YOUR_BACKEND_API", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body,
+      //   });
+    }
+
+    // save events every 10 seconds
+    setInterval(save, 10 * 1000);
   },
 
   sendEvents: function (event) {
@@ -8084,22 +8105,32 @@ window.Pascal = {
     // Implement the logic to send to your backend
     // Example: send an HTTP request with the event data and your API key
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", this.config.api_host + "/api/events", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.setRequestHeader("x-api-key", this.apiKey);
+    // const xhr = new XMLHttpRequest();
+    // xhr.open("POST", this.config.api_host + "/api/events", true);
+    // xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    // xhr.setRequestHeader("x-api-key", this.apiKey);
 
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status !== 200) {
-          console.error(
-            "Failed to send events to Pascal backend:",
-            xhr.responseText
-          );
-        }
-      }
-    };
+    // xhr.onreadystatechange = function () {
+    //   if (xhr.readyState === XMLHttpRequest.DONE) {
+    //     if (xhr.status !== 200) {
+    //       console.error(
+    //         "Failed to send events to Pascal backend:",
+    //         xhr.responseText
+    //       );
+    //     }
+    //   }
+    // };
 
-    xhr.send(JSON.stringify(event));
+    // xhr.send(JSON.stringify(event));
   },
 };
+
+export default function playSession(events) {
+  // Initialize the rrweb replayer
+  const replayer = new rrweb.Replayer(events, {
+    root: document.getElementById("replay"),
+  });
+
+  // Start the replay
+  replayer.play();
+}

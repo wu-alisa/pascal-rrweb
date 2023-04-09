@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rrweb Event Replay</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.min.css"
+    />
+    <style>
+      .event {
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .highlight {
+        background-color: yellow;
+        border-color: #f1c40f;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div id="replay"></div> -->
+    <div id="event-container"></div>
+    <!-- <script type="module">
+      import { testEvents } from "./test.js";
+      import playSession from "./pascal.js";
+
+      playSession(testEvents);
+    </script> -->
+    <script type="module" src="./show.js"></script>
+  </body>
+</html>
